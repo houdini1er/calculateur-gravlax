@@ -1,0 +1,25 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "fr.houdini1er.gravlax"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "fr.houdini1er.gravlax"
+        minSdk 21
+        targetSdk 34
+        versionCode((project.findProperty("vc") ?: "1") as int)
+        versionName "1." + (project.findProperty("vc") ?: "1")
+    }
+
+    buildTypes {
+        release { minifyEnabled false }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
