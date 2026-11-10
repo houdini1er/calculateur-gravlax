@@ -7,7 +7,7 @@ Page web autonome (un seul fichier `index.html`, sans dépendance hormis les pol
 - saumon (gravlax) ;
 - magret de canard, filet mignon de porc, poitrine de porc (salés puis séchés, avec planning de séchage).
 
-Pour chaque produit : texture au choix (doux, classique, ferme), pourcentages de sel et de sucre modifiables, planning daté à partir de l'heure de début, aromates dosés selon le poids, méthode pas à pas et précautions sanitaires.
+Pour chaque produit : texture au choix (doux, classique, ferme), pourcentages de sel et de sucre modifiables, planning daté à partir de l'heure de début, aromates dosés selon le poids, méthode pas à pas et précautions sanitaires. Interface en français ou en anglais (boutons FR / EN en haut à droite, choix mémorisé ; `?lang=en` dans l'adresse ouvre directement la version anglaise).
 
 Ouvrir `index.html` dans un navigateur. Les durées sont indicatives.
 
@@ -24,4 +24,8 @@ Standalone web page (a single `index.html` file, no dependencies apart from Goog
 
 For each product: choice of texture (mild, classic, firm), adjustable salt and sugar percentages, a dated schedule from the start time, seasonings scaled to the weight, step-by-step method and food-safety notes.
 
-Open `index.html` in a browser. Times are indicative. The page itself is in French.
+The interface is available in French and English (FR / EN buttons at the top right; the choice is remembered, and `?lang=en` in the address opens the English version directly).
+
+Open `index.html` in a browser. Times are indicative.
+
+<p align="center"><img src="docs/capture-en.png" alt="Screenshot of the calculator in English" width="420"></p>

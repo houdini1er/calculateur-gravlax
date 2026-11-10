@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="fr"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Calculateur Gravlax</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -39,8 +39,16 @@ body {
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 main { max-width: 620px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 h1 { font-family: var(--font-display); font-size: clamp(1.9rem, 7vw, 2.6rem); line-height: 1.05; margin: 0; text-wrap: balance; }
 .sub { color: var(--muted); margin: 6px 0 0; }
+.lang { display: flex; flex: none; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.lang button {
+  font: 600 0.8rem var(--font-body); letter-spacing: 0.06em; padding: 6px 10px; cursor: pointer;
+  background: var(--surface); color: var(--muted); border: 0;
+}
+.lang button + button { border-left: 1px solid var(--line); }
+.lang button[aria-pressed="true"] { background: var(--sea); color: var(--bg); }
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; }
 label, .lbl { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; display: block; margin-bottom: 6px; }
 .weight-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -84,18 +92,24 @@ ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
 
 <main>
   <header>
-    <h1>Calculateur Gravlax</h1>
-    <p class="sub">Sel, sucre et temps de salage sous vide selon le produit et son poids.</p>
+    <div>
+      <h1 data-t="title">Calculateur Gravlax</h1>
+      <p class="sub" data-t="sub">Sel, sucre et temps de salage sous vide selon le produit et son poids.</p>
+    </div>
+    <div class="lang" id="lang" role="group" aria-label="Langue / Language">
+      <button type="button" data-lang="fr" aria-pressed="true" lang="fr">FR</button>
+      <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+    </div>
   </header>
 
-  <section class="panel" aria-label="Paramètres">
+  <section class="panel" id="params" aria-label="Paramètres">
     <div>
-      <span class="lbl">Produit</span>
+      <span class="lbl" data-t="product">Produit</span>
       <div class="seg two-seg" id="prod">
-        <button type="button" data-prod="saumon" aria-pressed="true">Saumon<small>gravlax</small></button>
-        <button type="button" data-prod="magret" aria-pressed="false">Magret de canard<small>salé puis séché</small></button>
-        <button type="button" data-prod="filet" aria-pressed="false">Filet mignon de porc<small>salé puis séché</small></button>
-        <button type="button" data-prod="poitrine" aria-pressed="false">Poitrine de porc<small>salée puis séchée</small></button>
+        <button type="button" data-prod="saumon" aria-pressed="true"></button>
+        <button type="button" data-prod="magret" aria-pressed="false"></button>
+        <button type="button" data-prod="filet" aria-pressed="false"></button>
+        <button type="button" data-prod="poitrine" aria-pressed="false"></button>
       </div>
     </div>
 
@@ -108,45 +122,45 @@ ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
     </div>
 
     <div>
-      <span class="lbl">Texture souhaitée</span>
+      <span class="lbl" data-t="texture">Texture souhaitée</span>
       <div class="seg" id="seg">
-        <button type="button" data-p="doux" aria-pressed="false">Doux<small>3 % / 3 %</small></button>
-        <button type="button" data-p="classique" aria-pressed="true">Classique<small>5 % / 5 %</small></button>
-        <button type="button" data-p="ferme" aria-pressed="false">Ferme<small>6 % / 4 %</small></button>
+        <button type="button" data-p="doux" aria-pressed="false"><span></span><small></small></button>
+        <button type="button" data-p="classique" aria-pressed="true"><span></span><small></small></button>
+        <button type="button" data-p="ferme" aria-pressed="false"><span></span><small></small></button>
       </div>
     </div>
 
     <div class="two">
       <div><label for="ps" id="psL">Sel (% du poids)</label><div class="num"><input id="ps" type="number" min="1" max="10" step="0.5" value="5"><span class="unit">%</span></div></div>
-      <div><label for="pu">Sucre (% du poids)</label><div class="num"><input id="pu" type="number" min="0" max="10" step="0.5" value="5"><span class="unit">%</span></div></div>
+      <div><label for="pu" data-t="sugarPct">Sucre (% du poids)</label><div class="num"><input id="pu" type="number" min="0" max="10" step="0.5" value="5"><span class="unit">%</span></div></div>
     </div>
 
     <div>
-      <label for="start">Début du salage</label>
+      <label for="start" data-t="start">Début du salage</label>
       <input id="start" type="datetime-local">
     </div>
   </section>
 
-  <section class="results" aria-live="polite" aria-label="Résultats">
+  <section class="results" id="results" aria-live="polite" aria-label="Résultats">
     <div class="big"><div class="lbl" id="rSelL">Sel fin</div><div class="v"><b id="rSel">50</b><span>g</span></div></div>
-    <div class="big"><div class="lbl">Sucre semoule</div><div class="v"><b id="rSucre">50</b><span>g</span></div></div>
-    <div class="big hot"><div class="lbl">Temps de salage</div><div class="v"><b id="rH">36</b><span>h</span></div></div>
+    <div class="big"><div class="lbl" data-t="sugar">Sucre semoule</div><div class="v"><b id="rSucre">50</b><span>g</span></div></div>
+    <div class="big hot"><div class="lbl" data-t="time">Temps de salage</div><div class="v"><b id="rH">36</b><span>h</span></div></div>
   </section>
 
   <section class="panel">
-    <h2>Planning</h2>
+    <h2 data-t="plan">Planning</h2>
     <div class="tablewrap"><table id="plan"></table></div>
     <p class="hint" id="dur"></p>
   </section>
 
   <section class="panel">
-    <h2>Pour aromatiser</h2>
+    <h2 data-t="arom">Pour aromatiser</h2>
     <p class="hint" id="saltHint"></p>
     <div class="tablewrap"><table id="arom"></table></div>
   </section>
 
   <section class="panel">
-    <h2>Méthode</h2>
+    <h2 data-t="method">Méthode</h2>
     <ol id="steps"></ol>
     <p class="hint warn" id="warn"></p>
   </section>
@@ -154,86 +168,204 @@ ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
 
 <script>
 (function () {
-  var HIDE = "Sel : sel fin de mer, non iodé et sans anti-agglomérant. Sucre : sucre semoule blanc ; la cassonade ou le sucre roux donnent un goût plus caramélisé. Les quantités sont des poids.";
-  var PORK_HINT = "Sel nitrité obligatoire : pour une charcuterie crue à sécher, prenez un sel nitrité (sel de cure) à la place du sel fin, et suivez la notice du fabricant sans dépasser sa dose maximale. Sucre : sucre semoule blanc ou cassonade. Les quantités sont des poids.";
-  var PORK_WARN = "Porc cru séché : le sous vide sans nitrite favorise le botulisme, d'où le sel nitrité. Si vous le mangez cru, congelez d'abord la viande 3 semaines à −18 °C (risque de trichine). Si la viande devient molle, visqueuse ou sent mauvais, jetez-la. Pour un petit salé qui se cuit, gardez seulement le salage, ignorez le séchage et cuisez à cœur (70 °C minimum). Les durées sont indicatives : une pièce épaisse demande plus de temps.";
+  var lang = "fr";
 
-  function fr(n) { return String(Math.round(n * 10) / 10).replace(".", ","); }
+  /* Nombres : virgule décimale en français, point en anglais */
+  function fr(n) { var s = String(Math.round(n * 10) / 10); return lang === "fr" ? s.replace(".", ",") : s; }
   function gr(n) { return Math.round(n) + " g"; }
+  function pct(n) { return lang === "fr" ? fr(n) + " %" : fr(n) + "%"; }
+
+  /* Textes de l'interface */
+  var UI = {
+    fr: {
+      title: "Calculateur Gravlax",
+      sub: "Sel, sucre et temps de salage sous vide selon le produit et son poids.",
+      product: "Produit", texture: "Texture souhaitée",
+      saltPct: "Sel (% du poids)", curePct: "Sel nitrité (% du poids)", sugarPct: "Sucre (% du poids)",
+      start: "Début du salage", sugar: "Sucre semoule", time: "Temps de salage",
+      plan: "Planning", arom: "Pour aromatiser", method: "Méthode",
+      params: "Paramètres", results: "Résultats", grams: "Poids en grammes",
+      prof: { doux: "Doux", classique: "Classique", ferme: "Ferme" },
+      prod: {
+        saumon: ["Saumon", "gravlax"], magret: ["Magret de canard", "salé puis séché"],
+        filet: ["Filet mignon de porc", "salé puis séché"], poitrine: ["Poitrine de porc", "salée puis séchée"]
+      },
+      rowStart: "Mise sous vide et au frais",
+      rowDry: "Rincer, sécher, emballer dans un linge",
+      rowDryEnd: function (d) { return "Fin du séchage (" + d + " j)"; },
+      rowSlice: "Rincer, sécher, trancher",
+      durDry: function (h, d, g, loss, w) { return "Salage " + h + ", puis séchage " + d + " j environ, jusqu'à ≈ " + g + " g (perte de " + loss + " % du poids de départ : " + w + " g)."; },
+      durTotal: function (h, w) { return "Durée totale : " + h + " pour " + w + " g."; },
+      day: "j", locale: "fr-FR"
+    },
+    en: {
+      title: "Gravlax Calculator",
+      sub: "Salt, sugar and vacuum-curing time for each product and weight.",
+      product: "Product", texture: "Desired texture",
+      saltPct: "Salt (% of weight)", curePct: "Curing salt (% of weight)", sugarPct: "Sugar (% of weight)",
+      start: "Cure start", sugar: "Caster sugar", time: "Curing time",
+      plan: "Schedule", arom: "Seasoning", method: "Method",
+      params: "Settings", results: "Results", grams: "Weight in grams",
+      prof: { doux: "Mild", classique: "Classic", ferme: "Firm" },
+      prod: {
+        saumon: ["Salmon", "gravlax"], magret: ["Duck breast", "cured then dried"],
+        filet: ["Pork tenderloin", "cured then dried"], poitrine: ["Pork belly", "cured then dried"]
+      },
+      rowStart: "Vacuum-seal and refrigerate",
+      rowDry: "Rinse, dry, wrap in a cloth",
+      rowDryEnd: function (d) { return "End of drying (" + d + " d)"; },
+      rowSlice: "Rinse, dry, slice",
+      durDry: function (h, d, g, loss, w) { return "Curing " + h + ", then drying for about " + d + " d, down to ≈ " + g + " g (loss of " + loss + "% of the starting weight: " + w + " g)."; },
+      durTotal: function (h, w) { return "Total time: " + h + " for " + w + " g."; },
+      day: "d", locale: "en-GB"
+    }
+  };
+
+  var HINT = {
+    fr: "Sel : sel fin de mer, non iodé et sans anti-agglomérant. Sucre : sucre semoule blanc ; la cassonade ou le sucre roux donnent un goût plus caramélisé. Les quantités sont des poids.",
+    en: "Salt: fine sea salt, non-iodised and with no anti-caking agent. Sugar: white caster sugar; light or dark brown sugar gives a more caramel taste. Quantities are by weight."
+  };
+  var PORK_HINT = {
+    fr: "Sel nitrité obligatoire : pour une charcuterie crue à sécher, prenez un sel nitrité (sel de cure) à la place du sel fin, et suivez la notice du fabricant sans dépasser sa dose maximale. Sucre : sucre semoule blanc ou cassonade. Les quantités sont des poids.",
+    en: "Curing salt required: for raw charcuterie to be dried, use a nitrite curing salt instead of fine salt, and follow the manufacturer's instructions without exceeding its maximum dose. Sugar: white caster sugar or brown sugar. Quantities are by weight."
+  };
+  var PORK_WARN = {
+    fr: "Porc cru séché : le sous vide sans nitrite favorise le botulisme, d'où le sel nitrité. Si vous le mangez cru, congelez d'abord la viande 3 semaines à −18 °C (risque de trichine). Si la viande devient molle, visqueuse ou sent mauvais, jetez-la. Pour un petit salé qui se cuit, gardez seulement le salage, ignorez le séchage et cuisez à cœur (70 °C minimum). Les durées sont indicatives : une pièce épaisse demande plus de temps.",
+    en: "Raw dried pork: vacuum curing without nitrite encourages botulism, hence the curing salt. If you eat it raw, first freeze the meat for 3 weeks at −18 °C (trichinella risk). If the meat turns soft or slimy, or smells bad, throw it away. For salt pork to be cooked, do the curing only, skip the drying and cook it through (70 °C minimum at the core). Times are indicative: a thick piece needs longer."
+  };
+  var PORK_AROM = {
+    fr: function (kg) { return [
+      ["Thym, laurier, baies de genévrier (mélange)", gr(kg * 5)],
+      ["Poivre concassé", fr(kg * 5) + " g"],
+      ["Ail haché, facultatif", Math.max(1, Math.round(kg * 2)) + " gousse(s)"]
+    ]; },
+    en: function (kg) { return [
+      ["Thyme, bay leaf, juniper berries (mixed)", gr(kg * 5)],
+      ["Crushed pepper", fr(kg * 5) + " g"],
+      ["Chopped garlic, optional", Math.max(1, Math.round(kg * 2)) + " clove(s)"]
+    ]; }
+  };
 
   /* prof : [sel %, sucre %, coefficient de temps, jours de séchage]
      time : [heures fixes, heures par kg] pour un salage à sec ; le sous vide retire 20 % */
   var PR = {
     saumon: {
-      wLbl: "Poids du filet", def: 1000, dry: false, loss: 0, time: [12, 24], min: 10, max: 80,
+      def: 1000, dry: false, loss: 0, time: [12, 24], min: 10, max: 80, cure: false,
       prof: { doux: [3, 3, 0.8, 0], classique: [5, 5, 1, 0], ferme: [6, 4, 1.2, 0] },
-      selLbl: "Sel fin", hint: HIDE,
-      arom: function (kg) { return [
-        ["Aneth frais", gr(kg * 50)],
-        ["Poivre concassé", fr(kg * 2) + " g (≈ " + Math.max(1, Math.round(kg)) + " c. à café)"],
-        ["Alcool (aquavit, cognac, gin), facultatif", Math.round(kg * 15) + " ml"]
-      ]; },
-      steps: [
-        "Mélangez sel et sucre, avec l'aneth et le poivre.",
-        "Frottez la chair du filet avec le mélange, puis glissez-le dans un sac sous vide (un filet par sac, ou deux filets chair contre chair).",
-        "Mettez sous vide et placez au réfrigérateur (0 à 4 °C) pour la durée indiquée.",
-        "Pas besoin de retourner : massez simplement le sac une fois ou deux pour répartir la saumure.",
-        "Rincez rapidement, séchez, puis tranchez finement en biais."
-      ],
-      warn: "Le poisson se mange cru : choisissez un saumon extra-frais prévu pour cela, ou congelé 24 h à −20 °C minimum avant le salage. Gardez le gravlax au froid et mangez-le sous 5 jours. Les durées sont indicatives : un filet épais ou une chair très ferme demande plus de temps."
+      fr: {
+        wLbl: "Poids du filet", hint: HINT.fr,
+        arom: function (kg) { return [
+          ["Aneth frais", gr(kg * 50)],
+          ["Poivre concassé", fr(kg * 2) + " g (≈ " + Math.max(1, Math.round(kg)) + " c. à café)"],
+          ["Alcool (aquavit, cognac, gin), facultatif", Math.round(kg * 15) + " ml"]
+        ]; },
+        steps: [
+          "Mélangez sel et sucre, avec l'aneth et le poivre.",
+          "Frottez la chair du filet avec le mélange, puis glissez-le dans un sac sous vide (un filet par sac, ou deux filets chair contre chair).",
+          "Mettez sous vide et placez au réfrigérateur (0 à 4 °C) pour la durée indiquée.",
+          "Pas besoin de retourner : massez simplement le sac une fois ou deux pour répartir la saumure.",
+          "Rincez rapidement, séchez, puis tranchez finement en biais."
+        ],
+        warn: "Le poisson se mange cru : choisissez un saumon extra-frais prévu pour cela, ou congelé 24 h à −20 °C minimum avant le salage. Gardez le gravlax au froid et mangez-le sous 5 jours. Les durées sont indicatives : un filet épais ou une chair très ferme demande plus de temps."
+      },
+      en: {
+        wLbl: "Fillet weight", hint: HINT.en,
+        arom: function (kg) { var t = Math.max(1, Math.round(kg)); return [
+          ["Fresh dill", gr(kg * 50)],
+          ["Crushed pepper", fr(kg * 2) + " g (≈ " + t + " tsp)"],
+          ["Spirit (aquavit, cognac, gin), optional", Math.round(kg * 15) + " ml"]
+        ]; },
+        steps: [
+          "Mix the salt and sugar with the dill and pepper.",
+          "Rub the flesh of the fillet with the mixture, then slide it into a vacuum bag (one fillet per bag, or two fillets flesh to flesh).",
+          "Vacuum-seal and refrigerate (0 to 4 °C) for the time shown.",
+          "No need to turn it: just massage the bag once or twice to spread the brine.",
+          "Rinse quickly, pat dry, then slice thinly on the bias."
+        ],
+        warn: "The fish is eaten raw: choose an extra-fresh salmon meant for this, or one frozen for 24 h at −20 °C or below before curing. Keep the gravlax cold and eat it within 5 days. Times are indicative: a thick fillet or very firm flesh needs longer."
+      }
     },
     magret: {
-      wLbl: "Poids du magret", def: 400, dry: true, loss: 30, time: [6, 14], min: 5, max: 40,
+      def: 400, dry: true, loss: 30, time: [6, 14], min: 5, max: 40, cure: false,
       prof: { doux: [2.5, 0.5, 0.8, 5], classique: [3, 1, 1, 7], ferme: [4, 1, 1.2, 10] },
-      selLbl: "Sel fin", hint: HIDE,
-      arom: function (kg) { return [
-        ["Thym ou herbes de Provence", gr(kg * 5)],
-        ["Poivre concassé", fr(kg * 5) + " g"]
-      ]; },
-      steps: [
-        "Retirez la peau si vous voulez, sinon quadrillez le gras sans entamer la chair. Mélangez sel, sucre, poivre et thym.",
-        "Enrobez le magret du mélange, mettez-le sous vide dans un sac et placez-le au réfrigérateur (0 à 4 °C) pour la durée de salage indiquée. Massez le sac une fois ou deux.",
-        "Rincez, séchez soigneusement, puis enveloppez dans un linge propre ou une étamine.",
-        "Laissez sécher au frais (réfrigérateur ou cave à 10-14 °C) jusqu'à la perte de poids indiquée. Pesez-le tous les jours ou presque.",
-        "Tranchez très finement. Se conserve ensuite 2 à 3 semaines au réfrigérateur, filmé."
-      ],
-      warn: "Choisissez un magret très frais, avec une odeur neutre, et gardez-le toujours au froid pendant le séchage. Si le magret reste mou après la durée indiquée, ou s'il sent mauvais, jetez-le. Les durées sont indicatives : un magret épais demande plus de temps."
+      fr: {
+        wLbl: "Poids du magret", hint: HINT.fr,
+        arom: function (kg) { return [
+          ["Thym ou herbes de Provence", gr(kg * 5)],
+          ["Poivre concassé", fr(kg * 5) + " g"]
+        ]; },
+        steps: [
+          "Retirez la peau si vous voulez, sinon quadrillez le gras sans entamer la chair. Mélangez sel, sucre, poivre et thym.",
+          "Enrobez le magret du mélange, mettez-le sous vide dans un sac et placez-le au réfrigérateur (0 à 4 °C) pour la durée de salage indiquée. Massez le sac une fois ou deux.",
+          "Rincez, séchez soigneusement, puis enveloppez dans un linge propre ou une étamine.",
+          "Laissez sécher au frais (réfrigérateur ou cave à 10-14 °C) jusqu'à la perte de poids indiquée. Pesez-le tous les jours ou presque.",
+          "Tranchez très finement. Se conserve ensuite 2 à 3 semaines au réfrigérateur, filmé."
+        ],
+        warn: "Choisissez un magret très frais, avec une odeur neutre, et gardez-le toujours au froid pendant le séchage. Si le magret reste mou après la durée indiquée, ou s'il sent mauvais, jetez-le. Les durées sont indicatives : un magret épais demande plus de temps."
+      },
+      en: {
+        wLbl: "Duck breast weight", hint: HINT.en,
+        arom: function (kg) { return [
+          ["Thyme or herbes de Provence", gr(kg * 5)],
+          ["Crushed pepper", fr(kg * 5) + " g"]
+        ]; },
+        steps: [
+          "Remove the skin if you like; otherwise score the fat in a criss-cross pattern without cutting into the flesh. Mix the salt, sugar, pepper and thyme.",
+          "Coat the duck breast with the mixture, vacuum-seal it in a bag and refrigerate (0 to 4 °C) for the curing time shown. Massage the bag once or twice.",
+          "Rinse, dry carefully, then wrap in a clean cloth or cheesecloth.",
+          "Leave to dry somewhere cool (fridge, or cellar at 10-14 °C) until it reaches the weight loss shown. Weigh it every day or so.",
+          "Slice very thinly. It then keeps 2 to 3 weeks in the fridge, wrapped in cling film."
+        ],
+        warn: "Choose a very fresh duck breast with a neutral smell, and always keep it cold while it dries. If it is still soft after the time shown, or smells bad, throw it away. Times are indicative: a thick breast needs longer."
+      }
     },
     filet: {
-      wLbl: "Poids du filet mignon", def: 400, dry: true, loss: 35, time: [14, 24], min: 10, max: 72,
+      def: 400, dry: true, loss: 35, time: [14, 24], min: 10, max: 72, cure: true,
       prof: { doux: [2.5, 0.5, 0.8, 8], classique: [3, 0.5, 1, 12], ferme: [3.5, 0.5, 1.2, 16] },
-      selLbl: "Sel nitrité", hint: PORK_HINT,
-      arom: function (kg) { return [
-        ["Thym, laurier, baies de genévrier (mélange)", gr(kg * 5)],
-        ["Poivre concassé", fr(kg * 5) + " g"],
-        ["Ail haché, facultatif", Math.max(1, Math.round(kg * 2)) + " gousse(s)"]
-      ]; },
-      steps: [
-        "Parez le filet : retirez la membrane argentée pour que le sel pénètre. Mélangez le sel nitrité, le sucre, les herbes, le poivre et l'ail.",
-        "Enrobez le filet du mélange, mettez-le sous vide dans un sac et placez-le au réfrigérateur (0 à 4 °C) pour la durée de salage indiquée. Massez le sac une fois ou deux.",
-        "Rincez, séchez soigneusement, puis enveloppez dans un linge propre ou une étamine et ficelez.",
-        "Laissez sécher au frais (réfrigérateur ou cave à 10-14 °C) jusqu'à la perte de poids indiquée. Pesez-le tous les 2 jours.",
-        "Tranchez très finement. Se conserve ensuite 2 à 3 semaines au réfrigérateur, filmé."
-      ],
-      warn: PORK_WARN
+      fr: {
+        wLbl: "Poids du filet mignon", hint: PORK_HINT.fr, arom: PORK_AROM.fr, warn: PORK_WARN.fr,
+        steps: [
+          "Parez le filet : retirez la membrane argentée pour que le sel pénètre. Mélangez le sel nitrité, le sucre, les herbes, le poivre et l'ail.",
+          "Enrobez le filet du mélange, mettez-le sous vide dans un sac et placez-le au réfrigérateur (0 à 4 °C) pour la durée de salage indiquée. Massez le sac une fois ou deux.",
+          "Rincez, séchez soigneusement, puis enveloppez dans un linge propre ou une étamine et ficelez.",
+          "Laissez sécher au frais (réfrigérateur ou cave à 10-14 °C) jusqu'à la perte de poids indiquée. Pesez-le tous les 2 jours.",
+          "Tranchez très finement. Se conserve ensuite 2 à 3 semaines au réfrigérateur, filmé."
+        ]
+      },
+      en: {
+        wLbl: "Tenderloin weight", hint: PORK_HINT.en, arom: PORK_AROM.en, warn: PORK_WARN.en,
+        steps: [
+          "Trim the tenderloin: remove the silver skin so the salt can penetrate. Mix the curing salt, sugar, herbs, pepper and garlic.",
+          "Coat the tenderloin with the mixture, vacuum-seal it in a bag and refrigerate (0 to 4 °C) for the curing time shown. Massage the bag once or twice.",
+          "Rinse, dry carefully, then wrap in a clean cloth or cheesecloth and tie with string.",
+          "Leave to dry somewhere cool (fridge, or cellar at 10-14 °C) until it reaches the weight loss shown. Weigh it every 2 days.",
+          "Slice very thinly. It then keeps 2 to 3 weeks in the fridge, wrapped in cling film."
+        ]
+      }
     },
     poitrine: {
-      wLbl: "Poids de la poitrine", def: 1000, dry: true, loss: 30, time: [72, 48], min: 48, max: 192,
+      def: 1000, dry: true, loss: 30, time: [72, 48], min: 48, max: 192, cure: true,
       prof: { doux: [2.5, 0.5, 0.8, 14], classique: [3, 1, 1, 21], ferme: [3.5, 1, 1.2, 28] },
-      selLbl: "Sel nitrité", hint: PORK_HINT,
-      arom: function (kg) { return [
-        ["Thym, laurier, baies de genévrier (mélange)", gr(kg * 5)],
-        ["Poivre concassé", fr(kg * 5) + " g"],
-        ["Ail haché, facultatif", Math.max(1, Math.round(kg * 2)) + " gousse(s)"]
-      ]; },
-      steps: [
-        "Gardez la couenne ou retirez-la. Mélangez le sel nitrité, le sucre, les herbes, le poivre et l'ail.",
-        "Frottez la poitrine sur toutes les faces, mettez-la sous vide dans un sac et placez-la au réfrigérateur (0 à 4 °C) pour la durée de salage indiquée. Massez le sac une fois par jour.",
-        "Rincez, séchez soigneusement. Laissez à plat ou roulez la poitrine serrée, chair à l'intérieur, et ficelez. Enveloppez dans un linge propre ou une étamine.",
-        "Laissez sécher au frais (réfrigérateur ou cave à 10-14 °C) jusqu'à la perte de poids indiquée. Pesez-la tous les 2 à 3 jours.",
-        "Tranchez très finement, ou taillez en lardons à cuire. Se conserve ensuite 3 semaines au réfrigérateur, filmée."
-      ],
-      warn: PORK_WARN
+      fr: {
+        wLbl: "Poids de la poitrine", hint: PORK_HINT.fr, arom: PORK_AROM.fr, warn: PORK_WARN.fr,
+        steps: [
+          "Gardez la couenne ou retirez-la. Mélangez le sel nitrité, le sucre, les herbes, le poivre et l'ail.",
+          "Frottez la poitrine sur toutes les faces, mettez-la sous vide dans un sac et placez-la au réfrigérateur (0 à 4 °C) pour la durée de salage indiquée. Massez le sac une fois par jour.",
+          "Rincez, séchez soigneusement. Laissez à plat ou roulez la poitrine serrée, chair à l'intérieur, et ficelez. Enveloppez dans un linge propre ou une étamine.",
+          "Laissez sécher au frais (réfrigérateur ou cave à 10-14 °C) jusqu'à la perte de poids indiquée. Pesez-la tous les 2 à 3 jours.",
+          "Tranchez très finement, ou taillez en lardons à cuire. Se conserve ensuite 3 semaines au réfrigérateur, filmée."
+        ]
+      },
+      en: {
+        wLbl: "Pork belly weight", hint: PORK_HINT.en, arom: PORK_AROM.en, warn: PORK_WARN.en,
+        steps: [
+          "Keep the rind or remove it. Mix the curing salt, sugar, herbs, pepper and garlic.",
+          "Rub the belly on all sides, vacuum-seal it in a bag and refrigerate (0 to 4 °C) for the curing time shown. Massage the bag once a day.",
+          "Rinse and dry carefully. Leave it flat, or roll it tightly with the meat inside and tie with string. Wrap in a clean cloth or cheesecloth.",
+          "Leave to dry somewhere cool (fridge, or cellar at 10-14 °C) until it reaches the weight loss shown. Weigh it every 2 to 3 days.",
+          "Slice very thinly, or cut into lardons for cooking. It then keeps 3 weeks in the fridge, wrapped in cling film."
+        ]
+      }
     }
   };
 
@@ -251,30 +383,56 @@ ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
   st.value = toLocalInput(now);
 
   function fmtDate(d) {
-    return d.toLocaleString("fr-FR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    return d.toLocaleString(UI[lang].locale, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   }
   function fmtDur(h) {
-    var j = Math.floor(h / 24), r = h % 24;
+    var j = Math.floor(h / 24), r = h % 24, u = UI[lang].day;
     if (j === 0) return h + " h";
-    return j + " j" + (r ? " " + r + " h" : "");
+    return j + " " + u + (r ? " " + r + " h" : "");
+  }
+
+  /* Langue : ?lang=en|fr dans l'adresse, sinon le dernier choix, sinon celle du navigateur */
+  function pickLang() {
+    var q = (location.search.match(/[?&]lang=(fr|en)/) || [])[1];
+    if (q) return q;
+    try { var s = localStorage.getItem("gravlax-lang"); if (s === "fr" || s === "en") return s; } catch (e) {}
+    return /^fr/i.test(navigator.language || "fr") ? "fr" : "en";
   }
 
   function renderStatic() {
-    $("wLbl").textContent = P.wLbl;
-    $("rSelL").textContent = P.selLbl;
-    $("psL").textContent = P.selLbl === "Sel nitrité" ? "Sel nitrité (% du poids)" : "Sel (% du poids)";
-    $("saltHint").textContent = P.hint;
-    $("warn").textContent = P.warn;
-    $("steps").innerHTML = P.steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
+    var U = UI[lang], T = P[lang];
+    document.documentElement.lang = lang;
+    document.title = U.title;
+    document.querySelectorAll("[data-t]").forEach(function (el) { el.textContent = U[el.getAttribute("data-t")]; });
+    $("params").setAttribute("aria-label", U.params);
+    $("results").setAttribute("aria-label", U.results);
+    wr.setAttribute("aria-label", U.grams);
+    document.querySelectorAll("#lang button").forEach(function (x) {
+      x.setAttribute("aria-pressed", x.getAttribute("data-lang") === lang ? "true" : "false");
+    });
+    document.querySelectorAll("#prod button").forEach(function (x) {
+      var p = U.prod[x.getAttribute("data-prod")];
+      x.innerHTML = "";
+      x.appendChild(document.createTextNode(p[0]));
+      var s = document.createElement("small"); s.textContent = p[1]; x.appendChild(s);
+    });
+    $("wLbl").textContent = T.wLbl;
+    $("rSelL").textContent = P.cure ? (lang === "fr" ? "Sel nitrité" : "Curing salt") : (lang === "fr" ? "Sel fin" : "Fine salt");
+    $("psL").textContent = P.cure ? U.curePct : U.saltPct;
+    $("saltHint").textContent = T.hint;
+    $("warn").textContent = T.warn;
+    $("steps").innerHTML = T.steps.map(function (s) { return "<li>" + s + "</li>"; }).join("");
     document.querySelectorAll("#seg button").forEach(function (x) {
-      var p = P.prof[x.getAttribute("data-p")];
-      x.querySelector("small").textContent = fr(p[0]) + " % / " + fr(p[1]) + " %";
+      var k = x.getAttribute("data-p"), p = P.prof[k];
+      x.querySelector("span").textContent = U.prof[k];
+      x.querySelector("small").textContent = pct(p[0]) + " / " + pct(p[1]);
     });
   }
 
   function calc() {
     var grams = parseFloat(w.value);
     if (!(grams > 0)) return;
+    var U = UI[lang];
     var kg = grams / 1000;
     var salt = grams * (parseFloat(ps.value) || 0) / 100;
     var sugar = grams * (parseFloat(pu.value) || 0) / 100;
@@ -291,21 +449,21 @@ ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
     var start = new Date(st.value);
     var rows = "";
     if (!isNaN(start)) {
-      rows += "<tr><td>Mise sous vide et au frais</td><td>" + fmtDate(start) + "</td></tr>";
+      rows += "<tr><td>" + U.rowStart + "</td><td>" + fmtDate(start) + "</td></tr>";
       var endSalt = new Date(start.getTime() + hours * 3600000);
       if (P.dry) {
-        rows += "<tr><td><b>Rincer, sécher, emballer dans un linge</b></td><td><b>" + fmtDate(endSalt) + "</b></td></tr>";
-        rows += "<tr><td><b>Fin du séchage (" + dry + " j)</b></td><td><b>" + fmtDate(new Date(endSalt.getTime() + dry * 86400000)) + "</b></td></tr>";
+        rows += "<tr><td><b>" + U.rowDry + "</b></td><td><b>" + fmtDate(endSalt) + "</b></td></tr>";
+        rows += "<tr><td><b>" + U.rowDryEnd(dry) + "</b></td><td><b>" + fmtDate(new Date(endSalt.getTime() + dry * 86400000)) + "</b></td></tr>";
       } else {
-        rows += "<tr><td><b>Rincer, sécher, trancher</b></td><td><b>" + fmtDate(endSalt) + "</b></td></tr>";
+        rows += "<tr><td><b>" + U.rowSlice + "</b></td><td><b>" + fmtDate(endSalt) + "</b></td></tr>";
       }
     }
     $("plan").innerHTML = rows;
     $("dur").textContent = P.dry
-      ? "Salage " + fmtDur(hours) + ", puis séchage " + dry + " j environ, jusqu'à ≈ " + Math.round(grams * (1 - P.loss / 100)) + " g (perte de " + P.loss + " % du poids de départ : " + grams + " g)."
-      : "Durée totale : " + fmtDur(hours) + " pour " + grams + " g.";
+      ? U.durDry(fmtDur(hours), dry, Math.round(grams * (1 - P.loss / 100)), P.loss, grams)
+      : U.durTotal(fmtDur(hours), grams);
 
-    $("arom").innerHTML = P.arom(kg).map(function (r) {
+    $("arom").innerHTML = P[lang].arom(kg).map(function (r) {
       return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>";
     }).join("");
   }
@@ -345,6 +503,16 @@ ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
     syncWeight(P.def);
   });
 
+  $("lang").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    lang = b.getAttribute("data-lang");
+    try { localStorage.setItem("gravlax-lang", lang); } catch (err) {}
+    renderStatic();
+    calc();
+  });
+
+  lang = pickLang();
   renderStatic();
   calc();
 })();
